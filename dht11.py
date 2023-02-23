@@ -8,5 +8,5 @@ while True:
     sensor.measure()
     temp = sensor.temperature()
     hum = sensor.humidity()
-    print(f'"Temperature":"{temp}","Humidity":"{hum}"')
+    print(f'Temperature: {temp}, Humidity: {hum}')
     sleep(2)
