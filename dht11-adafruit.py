@@ -72,4 +72,4 @@ def sens_data(data):
     print(' ')
     
 timer = Timer(-1)
-timer.init(period=5000, mode=Timer.PERIODIC, callback = sens_data)
+timer.init(period=15000, mode=Timer.PERIODIC, callback = sens_data)
