@@ -2,5 +2,4 @@
 >>> wlan = network.WLAN(network.STA_IF)
 >>> wlan.active(True)
 >>> wlan.connect('Tertiary infotech', 'Tertiary888')
->>> import upip
->>> upip.install('micropython-umqtt.simple','/lib')
+>>> wlan.ifconfig()[0]
