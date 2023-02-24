@@ -6,17 +6,19 @@ import dht
 import network
 import time
 import sys
+import os
 
 sensor = dht.DHT11(Pin(4))
 
 WIFI_SSID     = 'Tertiary infotech'
 WIFI_PASSWORD = 'Tertiary888'
 
-mqtt_client_id      = bytes('client_'+'123210', 'utf-8') # Just a random client ID
+random_num = int.from_bytes(os.urandom(3), 'little')
+mqtt_client_id      = bytes('client_'+str(random_num), 'utf-8') # Just a random client ID
 
 ADAFRUIT_IO_URL     = 'io.adafruit.com' 
 ADAFRUIT_USERNAME   = 'XXXXXXXXXX'
-ADAFRUIT_IO_KEY     = 'ZZZZZZZZZZZZZZZZZZZZ'
+ADAFRUIT_IO_KEY     = 'ZZZZZZZZZZ'
 
 TEMP_FEED_ID      = 'temperature'
 HUM_FEED_ID       = 'humidity'
@@ -52,6 +54,7 @@ def connect_mqtt():
     try:
         print("Connecting to MQTT ...")
         client.connect()
+        print("Connected to MQTT")
     except Exception as e:
         print('Could not connect to MQTT server {}{}'.format(type(e).__name__, e))
         sys.exit()
@@ -82,4 +85,3 @@ def sens_data(data):
     
 timer = Timer(-1)
 timer.init(period=5000, mode=Timer.PERIODIC, callback = sens_data)
-
