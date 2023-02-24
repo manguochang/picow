@@ -8,8 +8,8 @@ import time
 import sys
 import os
 
-sensor = dht.DHT11(Pin(4)) 
-led = Pin('LED',Pin.OUT)
+led = Pin("LED",Pin.OUT)
+sensor = dht.DHT11(Pin(4))
 
 WIFI_SSID     = 'Tertiary infotech'
 WIFI_PASSWORD = 'Tertiary888'
@@ -39,10 +39,11 @@ def connect_wifi():
             time.sleep(1) 
     if(wifi.isconnected()):
         print('Connected!')
+        print('IP: ', wifi.ifconfig()[0])
     else:
         print('Not connected!')
-        sys.exit()      
-
+        sys.exit()
+      
 connect_wifi() # Connecting to WiFi Router 
 
 client = MQTTClient(client_id=mqtt_client_id, 
@@ -50,6 +51,7 @@ client = MQTTClient(client_id=mqtt_client_id,
                     user=ADAFRUIT_USERNAME, 
                     password=ADAFRUIT_IO_KEY,
                     ssl=False)
+
 def connect_mqtt():
     try:
         print("Connecting to MQTT ...")
@@ -60,16 +62,30 @@ def connect_mqtt():
         sys.exit()
 
 connect_mqtt()
-        
+
+toggle_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, TOGGLE_FEED_ID), 'utf-8') # format - ~/feeds/led
 temp_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, TEMP_FEED_ID), 'utf-8') # format - ~/feeds/temp
 hum_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, HUM_FEED_ID), 'utf-8') # format - ~/feeds/hum
-toggle_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, TOGGLE_FEED_ID), 'utf-8') # format - ~/feeds/led
+
+def cb(topic, msg): # callback function
+#     print('Received Data: Topic = {}, Msg = {}'.format(topic, msg))
+    received_data = str(msg, 'utf-8') # Receiving data
+    if topic == hum_feed:
+        val = float(received_data)
+        if val > 60.0:
+            print("Too humid !!!\n")
+            led.on()
+        else:
+            led.off()
+        
+client.set_callback(cb) # callback function
+client.subscribe(toggle_feed) # subscribing to particular topic
+client.subscribe(hum_feed) # subscribing to particular topic
 
 def sens_data(data):
     sensor.measure()                    # Measuring 
     temp = sensor.temperature()         # getting Temp
     hum = sensor.humidity()
-
     try:
         client.publish(temp_feed,    
                   bytes(str(temp), 'utf-8'),   # Publishing Temp feed to adafruit.io
@@ -81,15 +97,20 @@ def sens_data(data):
     except:
         connect_mqtt()
         return
-
-    if hum > 60:
-        led.on()
-    else:
-        led.off()
-
     print("Temperature : ", str(temp))
     print("Humidity    : ", str(hum))
-    print(' ')
+    print()
     
 timer = Timer(-1)
 timer.init(period=5000, mode=Timer.PERIODIC, callback = sens_data)
+
+while True:
+    try:
+        client.wait_msg()
+    except KeyboardInterrupt:
+        print('Ctrl-C pressed...exiting')
+        client.disconnect()
+        sys.exit()
+
+
+
