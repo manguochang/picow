@@ -8,8 +8,8 @@ import time
 import sys
 import os
 
-# Connect LDR between GP28 to 3.3V
-# Connect 10K resistor between GP28 and GND
+# Connect LDR between GP28 (ADC2) to 3.3V
+# Connect 10K resistor between GP28 (ADC2) and GND (AGND)
 from machine import ADC, Pin
 ldr = ADC(Pin(28))
 
