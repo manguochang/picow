@@ -20,8 +20,8 @@ random_num = int.from_bytes(os.urandom(3), 'little')
 mqtt_client_id      = bytes('client_'+str(random_num), 'utf-8') # Just a random client ID
 
 ADAFRUIT_IO_URL     = 'io.adafruit.com' 
-ADAFRUIT_IO_USERNAME = "XXXXXX"
-ADAFRUIT_IO_KEY = "YYYYYYYYYYYY"
+ADAFRUIT_IO_USERNAME = "XXXXXXXXXX"
+ADAFRUIT_IO_KEY = "ZZZZZZZZZZ"
 
 TEMP_FEED_ID      = 'temperature'
 HUM_FEED_ID       = 'humidity'
