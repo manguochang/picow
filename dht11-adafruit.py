@@ -15,7 +15,7 @@ WIFI_PASSWORD = 'Tertiary888'
 mqtt_client_id      = bytes('client_'+'123210', 'utf-8') # Just a random client ID
 
 ADAFRUIT_IO_URL     = 'io.adafruit.com' 
-ADAFRUIT_USERNAME   = 'XXXXXXXXXX'
+ADAFRUIT_IO_USERNAME   = 'XXXXXXXXXX'
 ADAFRUIT_IO_KEY     = 'ZZZZZZZZZZZZZZZZZZZZ'
 
 TEMP_FEED_ID      = 'temperature'
@@ -44,7 +44,7 @@ connect_wifi() # Connecting to WiFi Router
 
 client = MQTTClient(client_id=mqtt_client_id, 
                     server=ADAFRUIT_IO_URL, 
-                    user=ADAFRUIT_USERNAME, 
+                    user=ADAFRUIT_IO_USERNAME, 
                     password=ADAFRUIT_IO_KEY,
                     ssl=False)
 try:            
@@ -53,8 +53,8 @@ except Exception as e:
     print('Could not connect to MQTT server {}{}'.format(type(e).__name__, e))
     sys.exit()
             
-temp_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, TEMP_FEED_ID), 'utf-8') # format - ~/feeds/temp
-hum_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, HUM_FEED_ID), 'utf-8') # format - ~/feeds/hum
+temp_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_IO_USERNAME, TEMP_FEED_ID), 'utf-8') # format - ~/feeds/temp
+hum_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_IO_USERNAME, HUM_FEED_ID), 'utf-8') # format - ~/feeds/hum
 
 def sens_data(data):
     sensor.measure()                    # Measuring 
