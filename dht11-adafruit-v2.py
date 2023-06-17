@@ -17,7 +17,7 @@ random_num = int.from_bytes(os.urandom(3), 'little')
 mqtt_client_id      = bytes('client_'+str(random_num), 'utf-8') # Just a random client ID
 
 ADAFRUIT_IO_URL     = 'io.adafruit.com' 
-ADAFRUIT_USERNAME   = 'XXXXXXXXXX'
+ADAFRUIT_IO_USERNAME   = 'XXXXXXXXXX'
 ADAFRUIT_IO_KEY     = 'ZZZZZZZZZZ'
 
 TEMP_FEED_ID      = 'temperature'
@@ -46,7 +46,7 @@ connect_wifi() # Connecting to WiFi Router
 
 client = MQTTClient(client_id=mqtt_client_id, 
                     server=ADAFRUIT_IO_URL, 
-                    user=ADAFRUIT_USERNAME, 
+                    user=ADAFRUIT_IO_USERNAME, 
                     password=ADAFRUIT_IO_KEY,
                     ssl=False)
 
@@ -61,8 +61,8 @@ def connect_mqtt():
 
 connect_mqtt()
 
-temp_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, TEMP_FEED_ID), 'utf-8') # format - ~/feeds/temp
-hum_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, HUM_FEED_ID), 'utf-8') # format - ~/feeds/hum
+temp_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_IO_USERNAME, TEMP_FEED_ID), 'utf-8') # format - ~/feeds/temp
+hum_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_IO_USERNAME, HUM_FEED_ID), 'utf-8') # format - ~/feeds/hum
 
 def sens_data(data):
     sensor.measure()                    # Measuring 
