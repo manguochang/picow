@@ -16,9 +16,9 @@ WIFI_PASSWORD = 'Tertiary888'
 random_num = int.from_bytes(os.urandom(3), 'little')
 mqtt_client_id      = bytes('client_'+str(random_num), 'utf-8') # Just a random client ID
 
-ADAFRUIT_IO_URL     = 'io.adafruit.com' 
-ADAFRUIT_USERNAME   = 'XXXXXXXXXX'
-ADAFRUIT_IO_KEY     = 'ZZZZZZZZZZ'
+ADAFRUIT_IO_URL      = 'io.adafruit.com' 
+ADAFRUIT_IO_USERNAME = 'XXXXXXXXXX'
+ADAFRUIT_IO_KEY      = 'ZZZZZZZZZZ'
 
 TOGGLE_FEED_ID      = 'led'
 
@@ -44,7 +44,7 @@ connect_wifi() # Connecting to WiFi Router
 
 client = MQTTClient(client_id=mqtt_client_id, 
                     server=ADAFRUIT_IO_URL, 
-                    user=ADAFRUIT_USERNAME, 
+                    user=ADAFRUIT_IO_USERNAME, 
                     password=ADAFRUIT_IO_KEY,
                     ssl=False)
 
@@ -63,14 +63,14 @@ connect_mqtt()
 def cb(topic, msg): # callback function
     print('Received Data: Topic = {}, Msg = {}'.format(topic, msg))
     received_data = str(msg, 'utf-8') # Receiving data 
-    if received_data == "ON":
+    if received_data == "1":
         print("on")
         led.on()
-    if received_data == "OFF":
+    if received_data == "0":
         print("off")
         led.off()
         
-toggle_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_USERNAME, TOGGLE_FEED_ID), 'utf-8') # format - ~/feeds/led
+toggle_feed = bytes('{:s}/feeds/{:s}'.format(ADAFRUIT_IO_USERNAME, TOGGLE_FEED_ID), 'utf-8') # format - ~/feeds/led
 
 client.set_callback(cb) # callback function
 client.subscribe(toggle_feed) # subscribing to particular topic
