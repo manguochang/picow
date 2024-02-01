@@ -1,7 +1,7 @@
 from machine import ADC, Pin
 import utime
 
-ldr = ADC(Pin(28))
+ldr = ADC(Pin(27))
 
 readDelay = 1.0
 
