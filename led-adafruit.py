@@ -63,10 +63,10 @@ connect_mqtt()
 def cb(topic, msg): # callback function
     print('Received Data: Topic = {}, Msg = {}'.format(topic, msg))
     received_data = str(msg, 'utf-8') # Receiving data 
-    if received_data == "1":
+    if received_data == "ON":
         print("on")
         led.on()
-    if received_data == "0":
+    if received_data == "OFF":
         print("off")
         led.off()
         
